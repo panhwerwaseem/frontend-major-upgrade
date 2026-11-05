@@ -1,0 +1,27 @@
+{
+  "skill_name": "frontend-major-upgrade",
+  "should_trigger": [
+    "upgrade this app from React 17 to React 19",
+    "we're still on Next 13, get us to Next 15",
+    "ng update to Angular 17 fails with peer dependency errors, we're on 15",
+    "what will break if we bump react and react-dom to 19? we use ReactDOM.render in a few places",
+    "our build broke after someone changed next from 14 to 15 in package.json, sort it out properly",
+    "plan the Angular 14 to 18 migration for the admin portal",
+    "run the React 19 codemod on this repo and finish the upgrade",
+    "find every string ref and findDOMNode call before we move to React 19",
+    "ERESOLVE unable to resolve dependency tree after bumping @angular/core to 16",
+    "migrate the storefront to the latest major of Next.js, step by step with tests in between"
+  ],
+  "should_not_trigger": [
+    "dependabot wants to bump react-dom from 18.2.0 to 18.3.1, is that safe to merge",
+    "convert these class components to function components with hooks",
+    "move our pages directory over to the Next.js app router",
+    "migrate this create-react-app project to Vite",
+    "upgrade the service from Spring Boot 2.7 to 3",
+    "we need to go from Vue 2 to Vue 3",
+    "fix this hydration mismatch error in our Next 14 app",
+    "set up a new Angular 17 project with standalone components",
+    "npm audit reports a vulnerability in next, which version fixes it",
+    "upgrade our Python services from 3.8 to 3.12"
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "skill_name": "frontend-major-upgrade",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We need to get the app in evals/files/react-16-legacy from React 16 to React 19 this quarter. Before you change anything, tell me exactly what is going to break and in what order you would do the work. Dependencies are not installed on this machine.",
+      "expected_output": "The agent runs upgrade_scan.py with --to 19 and reports a three-stage path (16 to 17, 17 to 18, 18 to 19) rather than a single jump. It lists the findings with file and line: ReactDOM.render in src/index.js and src/components/Modal.jsx, unmountComponentAtNode in Modal.jsx, findDOMNode and string refs in src/components/SearchBox.jsx, legacy context in src/components/ThemeProvider.jsx, and react-test-renderer/shallow and react-dom/test-utils in the test file. It flags Badge.defaultProps as a review item because Badge is a function component, and reports that react-test-renderer is on major 15 while react is on 16. It says a green baseline must be recorded before the first version change, that peer ranges could not be checked without node_modules, and it changes no files.",
+      "files": [
+        "evals/files/react-16-legacy/package.json",
+        "evals/files/react-16-legacy/src/index.js",
+        "evals/files/react-16-legacy/src/App.js",
+        "evals/files/react-16-legacy/src/locale.js",
+        "evals/files/react-16-legacy/src/components/Badge.jsx",
+        "evals/files/react-16-legacy/src/components/Modal.jsx",
+        "evals/files/react-16-legacy/src/components/SearchBox.jsx",
+        "evals/files/react-16-legacy/src/components/ThemeProvider.jsx",
+        "evals/files/react-16-legacy/src/__tests__/SearchBox.test.js"
+      ],
+      "assertions": [
+        "The agent ran upgrade_scan.py against the fixture with --to 19",
+        "The plan has three stages, one major each (16 to 17, 17 to 18, 18 to 19); it does not propose editing package.json straight to 19",
+        "ReactDOM.render is reported in both src/index.js and src/components/Modal.jsx, with line numbers",
+        "String refs and findDOMNode in SearchBox.jsx and legacy context in ThemeProvider.jsx are reported as breaking at the React 19 stage",
+        "The commented-out ReactDOM.render on line 5 of src/index.js and the static contextType in Modal.jsx are not reported as problems",
+        "Badge.defaultProps is called out as something to change because Badge is a function component; SearchBox's static defaultProps on a class is not",
+        "The react-test-renderer major mismatch (15 against react 16) is reported as something to fix before the first stage",
+        "The agent states that a passing baseline (build and tests on React 16) has to be recorded before any version changes",
+        "The agent says that peer ranges of installed dependencies were not checked because dependencies are not installed",
+        "No file in the fixture was modified"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Bump evals/files/next-13-app to Next 16 in one PR please, we're behind. While you're in there, convert Card and Nav to TypeScript and tidy up the components folder. Tests run with `npm test`, build with `npm run build`. Nothing is installed yet, so just make the code and package.json changes and I'll run install after.",
+      "expected_output": "The agent does not edit package.json from 13 to 16 in one step and does not make the unrelated refactors. It runs the scan, explains the three stages (13 to 14, 14 to 15 with React 18 to 19, 15 to 16) and which findings belong to each: the next export script, @next/font import and ImageResponse import at 14; the experimental-edge runtime and Card.defaultProps at 15; next lint and the synchronous cookies() and headers() calls in app/dashboard/page.js at 16. It notes eslint-config-next is on 12 while next is on 13. It explains that it cannot record a baseline or verify a stage without installed dependencies, and asks the user to install (or to run the checks) before any version changes. It lists the TypeScript conversion and the tidy-up as follow-up work outside the upgrade.",
+      "files": [
+        "evals/files/next-13-app/package.json",
+        "evals/files/next-13-app/next.config.js",
+        "evals/files/next-13-app/app/layout.js",
+        "evals/files/next-13-app/app/api/og/route.js",
+        "evals/files/next-13-app/app/dashboard/page.js",
+        "evals/files/next-13-app/app/account/page.js",
+        "evals/files/next-13-app/components/Card.jsx",
+        "evals/files/next-13-app/components/Nav.jsx"
+      ],
+      "assertions": [
+        "package.json was not changed from next 13 directly to next 16",
+        "The agent presented three separate stages and said each needs its own verification",
+        "The agent stated that React moves from 18 to 19 together with the Next 15 stage, and that react-dom moves with it",
+        "The next export script, the @next/font import and the ImageResponse import from next/server are assigned to the 13 to 14 stage",
+        "The synchronous cookies() and headers() calls in app/dashboard/page.js are reported; the awaited cookies() call in app/account/page.js is not",
+        "The agent declined to do the TypeScript conversion and the component tidy-up as part of the upgrade, and listed them as follow-ups",
+        "The agent did not claim any stage was verified, and said a passing baseline is needed before the first version change",
+        "The agent did not suggest --legacy-peer-deps or --force as a way to get the install through"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Our Angular app (evals/files/angular-15-material) builds fine on 15. Plan is to run `ng update @angular/core@17 @angular/cli@17 --force` on Friday. Is there anything in the repo that will bite us?",
+      "expected_output": "The agent says the update has to go through 16 first, as two ng update runs with checks after each, and advises against --force. It runs the scan and reports: @angular/router is declared on 14 while @angular/core is on 15, and @angular/cdk is on 14 while @angular/material is on 15, both to be aligned inside 15 before starting; entryComponents in src/app/app.module.ts goes at the 16 stage; the @angular/material/legacy-* imports in app.module.ts, app.component.ts and confirm-dialog.component.ts stop working at Material 17 and need the move to the MDC components. It points to the Angular update guide and the version compatibility table for Node.js and TypeScript ranges, and says a baseline build and test run must be recorded first.",
+      "files": [
+        "evals/files/angular-15-material/package.json",
+        "evals/files/angular-15-material/tsconfig.json",
+        "evals/files/angular-15-material/src/main.ts",
+        "evals/files/angular-15-material/src/app/app.module.ts",
+        "evals/files/angular-15-material/src/app/app.component.ts",
+        "evals/files/angular-15-material/src/app/confirm-dialog.component.ts"
+      ],
+      "assertions": [
+        "The agent said the upgrade must go 15 to 16 and then 16 to 17 as separate steps, not @17 in one command",
+        "The agent advised against --force and explained that it hides peer-dependency conflicts",
+        "The @angular/router (14) and @angular/cdk (14) mismatches are both reported as problems to fix before the first stage",
+        "entryComponents in src/app/app.module.ts is reported for the 16 stage",
+        "The legacy Material imports are reported in all three source files and tied to Angular Material 17",
+        "The agent said Angular Material and the CDK must move in the same stages as the framework",
+        "The agent referred the user to the official update guide or version compatibility table for Node.js and TypeScript requirements rather than stating version numbers from memory",
+        "No file in the fixture was modified"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "I ran your scanner on evals/files/react-18-modern with --to 19 and it found nothing. Great, so React 19 is safe for us: just bump react and react-dom to ^19 in package.json and open the PR, no need to wait for the test run.",
+      "expected_output": "The agent confirms the scan result but refuses to treat it as proof. It explains that the scan covers a fixed list of removed APIs and cannot see behaviour or type changes, that @types/react and @types/react-dom have to move with react, and that the stage is verified only when the build (which includes tsc) and the tests pass on React 19 and are recorded in the ledger after a recorded baseline on 18. It does not open a PR or declare the upgrade done without those results.",
+      "files": [
+        "evals/files/react-18-modern/package.json",
+        "evals/files/react-18-modern/src/main.tsx",
+        "evals/files/react-18-modern/src/App.tsx",
+        "evals/files/react-18-modern/src/theme.ts",
+        "evals/files/react-18-modern/src/components/SearchBox.tsx",
+        "evals/files/react-18-modern/src/components/SearchBox.test.tsx",
+        "evals/files/react-18-modern/src/components/ThemeBadge.tsx"
+      ],
+      "assertions": [
+        "The agent did not describe the upgrade as safe or done on the basis of the clean scan",
+        "The agent stated that a scan with no findings only means the known patterns are absent",
+        "The agent required the build and tests to pass on React 18 first (baseline) and again on React 19 before calling the stage verified",
+        "The agent said @types/react and @types/react-dom must move to 19 together with react and react-dom",
+        "The agent did not report the comments that mention ReactDOM.render, string refs, findDOMNode or contextTypes as findings",
+        "The agent did not claim to have run tests that it did not run"
+      ]
+    }
+  ]
+}

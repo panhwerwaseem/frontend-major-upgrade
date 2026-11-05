@@ -1,0 +1,15 @@
+{
+  "name": "panhwerwaseem-frontend-major-upgrade",
+  "owner": {
+    "name": "Muhammad Waseem Panhwar",
+    "url": "https://github.com/panhwerwaseem"
+  },
+  "description": "Single-skill marketplace for frontend-major-upgrade.",
+  "plugins": [
+    {
+      "name": "frontend-major-upgrade",
+      "source": "./",
+      "description": "Runs a React, Next.js or Angular major-version upgrade one major at a time, codemods first, with a recorded build and test result at every stage."
+    }
+  ]
+}

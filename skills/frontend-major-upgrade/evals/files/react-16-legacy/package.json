@@ -1,0 +1,19 @@
+{
+  "name": "storefront-legacy",
+  "version": "3.4.1",
+  "private": true,
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --watchAll=false"
+  },
+  "dependencies": {
+    "prop-types": "^15.8.1",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
+    "react-scripts": "4.0.3"
+  },
+  "devDependencies": {
+    "react-test-renderer": "^15.6.2"
+  }
+}
